@@ -23,3 +23,9 @@ If you continue to follow the steps from the CanvOS repository, you will end up 
 Tailscale seems to have some issue picking up the hostname from the device, and I noticed multiple "hosts" in tailscale, e.g. "localhost-0", "localhost-1" etc. Once a name was given to it by Palette, it settled on that name. 
 
 It is possible to set the name per host in the user-data file.
+
+### Other things I learned while building this
+- When tailscale "up" occurs, it needs network access. The correct stage was therefore "network". If you use too early a stage, then the system may not be ready to successfully contact tailscale and persist state files.
+- To install tailscale, I had to use the Dockerfile, and this is the recommended way to install any type of packages on custom Palette Edge images
+- I had to figure out where tailscale was trying to persist state files, since Kairos is immutable. The bind mount option in the user-data did the trick, but it took me awhile to figure out that Tailscale only needs `/var/lib/tailscale`.
+- Bind mounts were a lot easier to use than I thought. Simply specify the path(es).
