@@ -1,0 +1,20 @@
+#cloud-config
+stylus:
+  site:
+    edgeHostToken: YOUR-TOKEN
+    paletteEndpoint: api.spectrocloud.com
+install:
+  poweroff: true
+  bind_mounts:
+  - /var/lib/tailscale
+stages:
+  initramfs:
+    - users:
+        kairos:
+          groups:
+            - sudo
+          passwd: kairos
+  network:
+    - name: "Register with tailscale"
+      commands:
+        - sudo tailscale up --authkey=tskey-auth-<SNIP>
