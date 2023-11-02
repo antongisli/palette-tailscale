@@ -29,3 +29,17 @@ It is possible to set the name per host in the user-data file.
 - To install tailscale, I had to use the Dockerfile, and this is the recommended way to install any type of packages on custom Palette Edge images
 - I had to figure out where tailscale was trying to persist state files, since Kairos is immutable. The bind mount option in the user-data did the trick, but it took me awhile to figure out that Tailscale only needs `/var/lib/tailscale`.
 - Bind mounts were a lot easier to use than I thought. Simply specify the path(es).
+
+### TODO
+to only try to register once:
+```
+#cloud-config
+bootcmd:
+  - if [ ! -f /var/tmp/has_run_before ]; then
+      touch /var/tmp/has_run_before
+      # Add your one-time commands here
+      echo "Running one-time script..."
+      # End your one-time commands
+    fi
+```
+
