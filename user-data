@@ -14,7 +14,21 @@ stages:
           groups:
             - sudo
           passwd: kairos
-  network:
-    - name: "Register with tailscale"
+  after-install:
+    - name: mount OEM
       commands:
-        - sudo tailscale up --authkey=tskey-auth-<SNIP>
+      - |
+          STATEDIR=/tmp/mnt/oem
+          STATE=$(blkid -L COS_OEM || true)
+          mkdir -p $STATEDIR || true
+          mount ${STATE} $STATEDIR
+    - files:
+      - content: |
+          stages:
+            network.after:
+            - commands:
+              - sudo tailscale up --authkey=tskey...
+        path: /tmp/mnt/oem/90-tailscale.yaml
+        permissions: "0640"
+        owner: 0
+        group: 0
