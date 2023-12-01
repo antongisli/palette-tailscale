@@ -29,6 +29,6 @@ stages:
             - commands:
               - sudo tailscale up --authkey=tskey...
         path: /tmp/mnt/oem/90-tailscale.yaml
-        permissions: "0640"
+        permissions: 0640
         owner: 0
         group: 0
